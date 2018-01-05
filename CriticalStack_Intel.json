@@ -4,7 +4,7 @@
     "description": "This app integrates with the CriticalStack feed to implement investigative actions",
     "publisher": "AvantGarde Partners",
     "package_name": "phantom_criticalstack",
-    "type": "investigative",
+    "type": "information",
     "license": "Copyright (c) AvantGarde Partners 2017-2018",
     "main_module": "CriticalStack_Intel_connector.pyc",
     "app_version": "1.0.0",
