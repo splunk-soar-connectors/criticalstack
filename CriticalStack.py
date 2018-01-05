@@ -142,8 +142,8 @@ class Intel(object):
 
         try:
             with closing(self.ssh.open_sftp()) as sftp:
-                with closing(sftp.open(self.file_loc)) as cs_file:
-                    cs_list = cs_file.readlines()
+                with closing(sftp.open(self.file_loc)) as cs_file:  # pylint: disable=E1101
+                    cs_list = cs_file.readlines()  # pylint: disable=E1101
         except Exception as e:
             raise Exception(
                 'Unable to read file - "' + self.file_loc + '" at '
