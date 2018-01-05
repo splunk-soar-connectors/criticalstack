@@ -7,8 +7,8 @@
   "type": "investigative",
   "license": "Copyright (c) AvantGarde Partners 2017",
   "main_module": "CriticalStack_Intel_connector.pyc",
-  "app_version": "1.0.0",
-  "utctime_updated": "2016-06-24T13:16:03.000000Z",
+  "app_version": "1.0.1",
+  "utctime_updated": "2018-01-05T21:04:09.000000Z",
   "product_vendor": "CriticalStack",
   "product_name": "CriticalStack Intel",
   "product_version_regex": ".*",
@@ -92,12 +92,16 @@
         {
           "data_path": "action_result.parameter.ip",
           "data_type": "string",
-          "contains": ["ip"]
+          "contains": [
+            "ip"
+          ]
         },
         {
           "data_path": "action_result.data.*.ip",
           "data_type": "string",
-          "contains": ["ip"]
+          "contains": [
+            "ip"
+          ]
         },
         {
           "data_path": "action_result.data.*.source",
@@ -143,12 +147,16 @@
         {
           "data_path": "action_result.parameter.domain",
           "data_type": "string",
-          "contains": ["domain"]
+          "contains": [
+            "domain"
+          ]
         },
         {
           "data_path": "action_result.data.*.domain",
           "data_type": "string",
-          "contains": ["domain"]
+          "contains": [
+            "domain"
+          ]
         },
         {
           "data_path": "action_result.data.*.source",
@@ -167,7 +175,10 @@
         "hash": {
           "description": "File Hash to Investigate",
           "contains": [
-            "hash", "sha256", "sha1", "md5"
+            "hash",
+            "sha256",
+            "sha1",
+            "md5"
           ],
           "primary": true,
           "data_type": "string",
@@ -175,11 +186,11 @@
         }
       },
       "render": {
-          "type": "custom",
-          "width": 10,
-          "height": 5,
-          "view": "CriticalStack_Intel_view.all_results",
-          "title": "FILE REPUTATION"
+        "type": "custom",
+        "width": 10,
+        "height": 5,
+        "view": "CriticalStack_Intel_view.all_results",
+        "title": "FILE REPUTATION"
       },
       "output": [
         {
@@ -201,12 +212,22 @@
         {
           "data_path": "action_result.parameter.hash",
           "data_type": "string",
-          "contains": ["hash", "sha256", "sha1", "md5"]
+          "contains": [
+            "hash",
+            "sha256",
+            "sha1",
+            "md5"
+          ]
         },
         {
           "data_path": "action_result.data.*.hash",
           "data_type": "string",
-          "contains": ["hash", "sha256", "sha1", "md5"]
+          "contains": [
+            "hash",
+            "sha256",
+            "sha1",
+            "md5"
+          ]
         },
         {
           "data_path": "action_result.data.*.source",
