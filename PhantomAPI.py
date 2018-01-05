@@ -61,7 +61,7 @@ class PhantomList(object):
             elif(method == "PUT"):
                 r = requests.put(
                     url,
-                    headers=self.headers,
+                    headers=self.header,
                     data=payload,
                     verify=False
                 )
