@@ -53,6 +53,12 @@
             "required": true,
             "default": "/opt/critical-stack/frameworks/intel/master-public.bro.dat",
             "order": 5
+        },
+        "verifyPhantomServerCert": {
+            "description": "Verify Phantom server certificate",
+            "data_type": "boolean",
+            "required": false,
+            "order": 6
         }
     },
     "actions": [
