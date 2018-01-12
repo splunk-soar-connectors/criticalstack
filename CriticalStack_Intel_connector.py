@@ -243,7 +243,7 @@ class CriticalStack_Intel_connector(BaseConnector):
         except Exception as err:
             return self.set_status_save_progress(
                 phantom.APP_ERROR,
-                'Error connecting to Critical Stack. Details: ' + err.message
+                'Test Connectivity Failed'
             )
 
         try:
