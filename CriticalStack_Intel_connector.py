@@ -251,11 +251,13 @@ class CriticalStack_Intel_connector(BaseConnector):
         try:
             phant.get_list('testConnectionList')
         except Exception as err:
-            return self.set_status_save_progress(
+            self.save_progress("Test Connectivity Failed.")
+            self.set_status(
                 phantom.APP_ERROR,
                 config.get('phantomApiKey')
                 + 'Error connecting to Phantom API. Details: ' + err.message
             )
+            return action_result.get_status()
 
         return self.set_status_save_progress(
             phantom.APP_SUCCESS,
