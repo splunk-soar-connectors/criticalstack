@@ -246,7 +246,7 @@ class CriticalStack_Intel_connector(BaseConnector):
                 phantom.APP_ERROR,
                 'Error connecting to Phantom API. Details: ' + err.message
             )
-            return action_result.get_status()
+            return self.get_status()
 
         try:
             phant.get_list('testConnectionList')
@@ -257,9 +257,9 @@ class CriticalStack_Intel_connector(BaseConnector):
                 config.get('phantomApiKey')
                 + 'Error connecting to Phantom API. Details: ' + err.message
             )
-            return action_result.get_status()
+            return self.get_status()
 
-        return self.set_status_save_progress(
+        self.set_status(
             phantom.APP_SUCCESS,
             (
                 'Successfully logged into - '
@@ -268,6 +268,8 @@ class CriticalStack_Intel_connector(BaseConnector):
                 'Succesfully connected to Phantom API.'
             )
         )
+        self.save_progress("Test Connectivity Passed.")
+        return self.get_status()
 
     def handle_action(self, param):
 

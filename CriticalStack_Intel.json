@@ -117,6 +117,9 @@
                     "data_type": "string"
                 }
             ],
+            "render": {
+                "type": "table"
+            },
             "versions": "EQ(*)"
         },
         {
@@ -180,6 +183,9 @@
                     "data_type": "string"
                 }
             ],
+            "render": {
+                "type": "table"
+            },
             "versions": "EQ(*)"
         },
         {
