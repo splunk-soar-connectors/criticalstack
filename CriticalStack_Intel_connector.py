@@ -44,7 +44,8 @@ class CriticalStack_Intel_connector(BaseConnector):
 
     def _initialize_phantom_list(self, config):
         phant = PhantomList(
-            verify_cert=config.get("verifyPhantomServerCert")
+            verify_cert=config.get("verifyPhantomServerCert"),
+            base_url=self.get_phantom_base_url()
         )
 
         return phant

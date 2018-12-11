@@ -12,7 +12,7 @@
     "product_vendor": "CriticalStack",
     "product_name": "CriticalStack Intel",
     "product_version_regex": ".*",
-    "min_phantom_version": "3.0.251",
+    "min_phantom_version": "4.0.1068",
     "logo": "logo_criticalstack.svg",
     "logo_dark": "logo_criticalstack_dark.svg",
     "uber_view": "CriticalStack_Intel_view.all_results",
