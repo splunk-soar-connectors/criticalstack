@@ -71,14 +71,8 @@ class CriticalStack_Intel_connector(BaseConnector):
         last_updated_record = []
         update_needed = True
 
-        if(
-            'content' in last_updated_list
-            and len(last_updated_list['content'][0]) < 2
-        ):
-            raise IndexError(
-                self.CS_LAST_UPDATED_LIST + ' - list is malformed. Expected '
-                'Column1-Prefix, Column2-Last Updated Date.'
-            )
+        if('content' in last_updated_list and len(last_updated_list['content'][0]) < 2):
+            raise IndexError('{0} - list is malformed. Expected Column1-Prefix, Column2-Last Updated Date.'.format(self.CS_LAST_UPDATED_LIST))
         elif 'content' in last_updated_list:
             last_updated_record = [
                 record for record in last_updated_list['content']
@@ -93,15 +87,12 @@ class CriticalStack_Intel_connector(BaseConnector):
                     self.TIME_FORMAT
                 )
             except ValueError as err:
-                raise ValueError(
-                    'Second column of list - ' + self.CS_LAST_UPDATED_LIST
-                    + ' - does not represent a date time in '
-                    + self.TIME_FORMAT + ' format. Details: ' + err.message
-                )
+                raise ValueError('Second column of list - {0} - does not represent a date time in {1} format. Details: {2}'.format(self.CS_LAST_UPDATED_LIST,
+                                 self.TIME_FORMAT, err.message))
 
             now = datetime.now()
 
-            if((now-t1).total_seconds() < 1800):
+            if((now - t1).total_seconds() < 1800):
                 update_needed = False
 
         return update_needed
@@ -111,14 +102,9 @@ class CriticalStack_Intel_connector(BaseConnector):
         response = cs.get_cs_list_data()
 
         for cs_type in list(self.CS_DATA_TYPES.values()):
-            cs_list = [
-                record for record in response
-                if 'Intel::' + cs_type in record
-            ]
-            phant.create_list(
-                [line.split('\t') for line in cs_list],
-                prefix + '-' + cs_type
-            )
+            cs_list = [record for record in response if 'Intel::' + cs_type in record]
+
+            phant.create_list([line.split('\t') for line in cs_list], prefix + '-' + cs_type)
 
         last_updated_list = phant.get_list(self.CS_LAST_UPDATED_LIST)
 
@@ -129,21 +115,13 @@ class CriticalStack_Intel_connector(BaseConnector):
             if len(rows_to_update) > 0:
                 for row_num in rows_to_update:
                     if len(last_updated_list['content'][row_num]) < 2:
-                        raise IndexError(
-                            self.CS_LAST_UPDATED_LIST
-                            + ' - list is malformed. '
-                            'Expected Column1-Prefix, Column2-Last Updated '
-                            'Date.'
-                        )
+                        raise IndexError('{0} - list is malformed. Expected Column1-Prefix, Column2-Last Updated Date.'.format(self.CS_LAST_UPDATED_LIST))
                     else:
                         last_updated_list['content'][row_num][1] = now
             else:
                 last_updated_list['content'].append([prefix, now])
 
-            phant.create_list(
-                last_updated_list['content'],
-                self.CS_LAST_UPDATED_LIST
-            )
+            phant.create_list(last_updated_list['content'], self.CS_LAST_UPDATED_LIST)
         else:
             phant.create_list([[prefix, now]], self.CS_LAST_UPDATED_LIST)
 
@@ -170,16 +148,10 @@ class CriticalStack_Intel_connector(BaseConnector):
             try:
                 self._update_phantom_lists(cs, phant, prefix)
             except Exception as err:
-                return self._set_error(
-                    action_result,
-                    'Phantom List Error 2',
-                    err
-                )
+                return self._set_error(action_result, 'Phantom List Error 2', err)
 
         try:
-            phantom_list = phant.get_list(
-                prefix + '-' + self.CS_DATA_TYPES[cs_type]
-            )
+            phantom_list = phant.get_list(prefix + '-' + self.CS_DATA_TYPES[cs_type])
         except Exception as err:
             return self._set_error(action_result, 'Phantom List Error 3', err)
 
@@ -190,22 +162,12 @@ class CriticalStack_Intel_connector(BaseConnector):
             try:
                 found_rows = phant.search_list(phantom_list, 0, param[cs_type])
             except Exception as err:
-                return self._set_error(
-                    action_result,
-                    'Phantom List Error 4',
-                    err
-                )
+                return self._set_error(action_result, 'Phantom List Error 4', err)
             else:
-                message = (
-                    str(len(phantom_list['content'])) + ' '
-                    + self._pluralize(cs_type) + ' scanned.'
-                )
+                message = "{0} {1} scanned.".format(str(len(phantom_list['content'])), self._pluralize(cs_type))
 
         else:
-            message = (
-                'No ' + self._pluralize(cs_type) + ' exist in ' + prefix
-                + '-' + self.CS_DATA_TYPES[cs_type]
-            )
+            message = 'No {0} exist in {1}-{2}'.format(self._pluralize(cs_type), prefix, self.CS_DATA_TYPES[cs_type])
 
         summary = {
             'detected_' + cs_type + '_count': str(len(found_rows)),
@@ -243,32 +205,19 @@ class CriticalStack_Intel_connector(BaseConnector):
             cs.connect_to_cs(verify_connect=True)
         except Exception as err:
             self.save_progress("Test Connectivity Failed.")
-            self.set_status(
-                phantom.APP_ERROR,
-                'Error connecting to Phantom API. Details: ' + err.message
-            )
+            self.set_status(phantom.APP_ERROR, 'Error connecting to Phantom API. Details: {0}'.format(err.message))
             return self.get_status()
 
         try:
             phant.get_list('testConnectionList')
         except Exception as err:
             self.save_progress("Test Connectivity Failed.")
-            self.set_status(
-                phantom.APP_ERROR,
-                config.get('phantomApiKey')
-                + 'Error connecting to Phantom API. Details: ' + err.message
-            )
+            self.set_status(phantom.APP_ERROR, '{0} Error connecting to Phantom API. Details: {1}'.format(config.get('phantomApiKey'), err.message))
             return self.get_status()
 
-        self.set_status(
-            phantom.APP_SUCCESS,
-            (
-                'Successfully logged into - '
-                + config.get('criticalStackServer')
-                + ' and ran - sudo critical-stack-intel list. '
-                'Succesfully connected to Phantom API.'
-            )
-        )
+        msg = "Successfully logged into - {0} and ran - sudo critical-stack-intel list. Succesfully connected to Phantom API.".format(config.get('criticalStackServer'))
+        self.set_status(phantom.APP_SUCCESS, msg)
+
         self.save_progress("Test Connectivity Passed.")
         return self.get_status()
 

@@ -5,14 +5,14 @@
     "publisher": "AvantGarde Partners",
     "package_name": "phantom_criticalstack",
     "type": "information",
-    "license": "Copyright (c) AvantGarde Partners 2017-2018",
+    "license": "Copyright (c) AvantGarde Partners 2017-2019",
     "main_module": "CriticalStack_Intel_connector.pyc",
     "app_version": "1.0.5",
     "utctime_updated": "2018-01-13T01:26:59.000000Z",
     "product_vendor": "CriticalStack",
     "product_name": "CriticalStack Intel",
     "product_version_regex": ".*",
-    "min_phantom_version": "4.0.1068",
+    "min_phantom_version": "4.2.7532",
     "logo": "logo_criticalstack.svg",
     "logo_dark": "logo_criticalstack_dark.svg",
     "uber_view": "CriticalStack_Intel_view.all_results",
@@ -67,7 +67,7 @@
             "description": "Checks IP against CriticalStack IP lists",
             "type": "investigate",
             "identifier": "ip reputation",
-            "read_only": false,
+            "read_only": true,
             "parameters": {
                 "ip": {
                     "description": "IP Address to Investigate",
@@ -133,7 +133,7 @@
             "description": "Checks Domain against CriticalStack Domain lists",
             "type": "investigate",
             "identifier": "domain reputation",
-            "read_only": false,
+            "read_only": true,
             "parameters": {
                 "domain": {
                     "description": "Domain to Investigate",
@@ -199,7 +199,7 @@
             "description": "Checks file against CriticalStack file hashes",
             "type": "investigate",
             "identifier": "file reputation",
-            "read_only": false,
+            "read_only": true,
             "parameters": {
                 "hash": {
                     "description": "File Hash to Investigate",
