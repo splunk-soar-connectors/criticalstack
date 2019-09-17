@@ -55,13 +55,24 @@
             "order": 5
         },
         "verifyPhantomServerCert": {
-            "description": "Verify Phantom server certificate",
+            "description": "Verify Phantom Server Certificate",
             "data_type": "boolean",
             "required": false,
             "order": 6
         }
     },
     "actions": [
+        {
+            "action": "test connectivity",
+            "description": "Validate connectivity to CriticalStack",
+            "verbose": "<p><strong>Details:</strong></p><ul><li>Validates connectivity to the host on which the CriticalStack client is installed.</li><li>Validates the ability to perform CriticalStack 'list' command on CriticalStack host.</li><li>Validates connectivity to Phantom API.</li></ul>",
+            "type": "test",
+            "identifier": "test_connectivity",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
+            "versions": "EQ(*)"
+        },
         {
             "action": "ip reputation",
             "description": "Checks IP against CriticalStack IP lists",
@@ -343,17 +354,6 @@
                     ]
                 }
             ],
-            "versions": "EQ(*)"
-        },
-        {
-            "action": "test connectivity",
-            "description": "Validates connectivity to CriticalStack",
-            "verbose": "<p><strong>Details:</strong></p><ul><li>Validate connectivity to the host on which the CriticalStack client is installed.</li><li>Validates the ability to perform CriticalStack 'list' command on CriticalStack host.</li><li>Validates connectivity to Phantom API</li></ul>",
-            "type": "test",
-            "identifier": "test_connectivity",
-            "read_only": true,
-            "parameters": {},
-            "output": [],
             "versions": "EQ(*)"
         }
     ]

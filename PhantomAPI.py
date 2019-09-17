@@ -86,14 +86,14 @@ class PhantomList(object):
             raise Exception('Cannot create list - {0} - because it already exists.'.format(list_name))
         elif list_exists:
             response = self._send_request(
-                '/rest/decided_list/' + list_name,
+                'rest/decided_list/' + list_name,
                 'POST',
                 payload=json.dumps(list_json),
                 content_type='application/json'
             )
         elif not list_exists:
             response = self._send_request(
-                '/rest/decided_list',
+                'rest/decided_list',
                 'POST',
                 payload=json.dumps(list_json),
                 content_type='application/json'
@@ -103,7 +103,7 @@ class PhantomList(object):
 
     def get_list(self, list_name):
         response = self._send_request(
-            '/rest/decided_list/' + list_name + '?_output_format=JSON',
+            'rest/decided_list/' + list_name + '?_output_format=JSON',
             'GET',
         )
 
