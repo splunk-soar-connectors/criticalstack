@@ -226,10 +226,10 @@ class CriticalStack_Intel_connector(BaseConnector):
         action_id = self.get_action_identifier()
 
         supported_actions = {
-            "test connectivity": self._test_connectivity,
-            "ip reputation": self.ip_reputation,
-            "domain reputation": self.domain_reputation,
-            "file reputation": self.file_reputation
+            "test_connectivity": self._test_connectivity,
+            "ip_reputation": self.ip_reputation,
+            "domain_reputation": self.domain_reputation,
+            "file_reputation": self.file_reputation
         }
 
         run_action = supported_actions[action_id]

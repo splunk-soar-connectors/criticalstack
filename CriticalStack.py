@@ -1,7 +1,6 @@
 from contextlib import closing
 import os
 import paramiko
-# import time
 os.sys.path.insert(
     0,
     '{}/paramiko'.format(os.path.dirname(os.path.abspath(__file__)))

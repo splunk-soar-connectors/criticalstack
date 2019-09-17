@@ -66,11 +66,11 @@
             "action": "ip reputation",
             "description": "Checks IP against CriticalStack IP lists",
             "type": "investigate",
-            "identifier": "ip reputation",
+            "identifier": "ip_reputation",
             "read_only": true,
             "parameters": {
                 "ip": {
-                    "description": "IP Address to Investigate",
+                    "description": "IP address to investigate",
                     "contains": [
                         "ip"
                     ],
@@ -82,13 +82,20 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.ip",
                     "data_type": "string",
                     "contains": [
                         "ip"
+                    ],
+                    "example_values": [
+                        "1.1.1.1"
                     ]
                 },
                 {
@@ -96,6 +103,9 @@
                     "data_type": "string",
                     "contains": [
                         "ip"
+                    ],
+                    "example_values": [
+                        "1.1.1.1"
                     ]
                 },
                 {
@@ -121,6 +131,20 @@
                 {
                     "data_path": "action_result.message",
                     "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
                 }
             ],
             "render": {
@@ -130,13 +154,13 @@
         },
         {
             "action": "domain reputation",
-            "description": "Checks Domain against CriticalStack Domain lists",
+            "description": "Checks domain against CriticalStack domain lists",
             "type": "investigate",
-            "identifier": "domain reputation",
+            "identifier": "domain_reputation",
             "read_only": true,
             "parameters": {
                 "domain": {
-                    "description": "Domain to Investigate",
+                    "description": "Domain to investigate",
                     "contains": [
                         "domain"
                     ],
@@ -148,13 +172,20 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.domain",
                     "data_type": "string",
                     "contains": [
                         "domain"
+                    ],
+                    "example_values": [
+                        "test.com"
                     ]
                 },
                 {
@@ -162,6 +193,9 @@
                     "data_type": "string",
                     "contains": [
                         "domain"
+                    ],
+                    "example_values": [
+                        "test.com"
                     ]
                 },
                 {
@@ -187,6 +221,20 @@
                 {
                     "data_path": "action_result.message",
                     "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
                 }
             ],
             "render": {
@@ -198,11 +246,11 @@
             "action": "file reputation",
             "description": "Checks file against CriticalStack file hashes",
             "type": "investigate",
-            "identifier": "file reputation",
+            "identifier": "file_reputation",
             "read_only": true,
             "parameters": {
                 "hash": {
-                    "description": "File Hash to Investigate",
+                    "description": "File hash to investigate",
                     "contains": [
                         "hash",
                         "sha256",
@@ -224,7 +272,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.hash",
@@ -234,6 +286,9 @@
                         "sha256",
                         "sha1",
                         "md5"
+                    ],
+                    "example_values": [
+                        "ef7cd49899f81750f3f7c4619bb1e51c82e0d66c"
                     ]
                 },
                 {
@@ -244,6 +299,9 @@
                         "sha256",
                         "sha1",
                         "md5"
+                    ],
+                    "example_values": [
+                        "ef7cd49899f81750f3f7c4619bb1e51c82e0d66c"
                     ]
                 },
                 {
@@ -269,6 +327,20 @@
                 {
                     "data_path": "action_result.message",
                     "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
                 }
             ],
             "versions": "EQ(*)"
@@ -278,7 +350,7 @@
             "description": "Validates connectivity to CriticalStack",
             "verbose": "<p><strong>Details:</strong></p><ul><li>Validate connectivity to the host on which the CriticalStack client is installed.</li><li>Validates the ability to perform CriticalStack 'list' command on CriticalStack host.</li><li>Validates connectivity to Phantom API</li></ul>",
             "type": "test",
-            "identifier": "test connectivity",
+            "identifier": "test_connectivity",
             "read_only": true,
             "parameters": {},
             "output": [],
