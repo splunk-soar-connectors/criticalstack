@@ -51,8 +51,8 @@ class Intel(object):
         if verify_connect:
             message = self.run_cs_command('list')
             if(len(message) < 1 or not any('Pulling feed list from' in line for line in message)):
-                err_msg = 'Unable to verify CriticalStack connectivity using command - sudo critical-stack-intel list. Please '
-                err_msg += 'verify the command works on the server and the user - {0} - is a sudoer. Details: {1}'.format(self.user, str(message))
+                err_msg = 'Unable to verify CriticalStack connectivity using command - sudo critical-stack-intel list. Please \
+                verify the command works on the server and the user - {0} - is a sudoer. Details: {1}'.format(self.user, str(message))
                 raise Exception(err_msg)
 
             if self._is_connected():
