@@ -7,7 +7,7 @@
     "type": "information",
     "license": "Copyright (c) AvantGarde Partners 2017-2019",
     "main_module": "CriticalStack_Intel_connector.pyc",
-    "app_version": "1.0.5",
+    "app_version": "1.0.6",
     "utctime_updated": "2018-01-13T01:26:59.000000Z",
     "product_vendor": "CriticalStack",
     "product_name": "CriticalStack Intel",
