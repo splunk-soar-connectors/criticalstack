@@ -1,10 +1,11 @@
 import json
 import requests
+from phantom.base_connector import BaseConnector
 
 
 class PhantomList(object):
 
-    def __init__(self, base_url='https://127.0.0.1', verify_cert=False):
+    def __init__(self, base_url=BaseConnector._get_phantom_base_url(), verify_cert=False):
         self.base_url = base_url
         # self.auth_token = auth_token
         # self.header = {
