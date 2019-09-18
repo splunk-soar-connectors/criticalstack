@@ -1,14 +1,11 @@
 import json
 import requests
+from phantom.base_connector import BaseConnector
 
 
 class PhantomList(object):
 
-    def __init__(
-        self,
-        base_url='https://127.0.0.1',
-        verify_cert=False
-    ):
+    def __init__(self, base_url=BaseConnector._get_phantom_base_url(), verify_cert=False):
         self.base_url = base_url
         # self.auth_token = auth_token
         # self.header = {
@@ -26,10 +23,7 @@ class PhantomList(object):
                 found = False
             else:
                 # something terribly wrong happned
-                raise Exception(
-                    'Error reading from list - ' + list_name
-                    + '. Error: ' + response['message']
-                )
+                raise Exception('Error reading from list - {0}. Error: {1}'.format(list_name, response['message']))
 
         return found
 
@@ -67,22 +61,12 @@ class PhantomList(object):
                 )
             r.raise_for_status
         except requests.exceptions.SSLError as err:
-            raise Exception(
-                'Error connecting to API - '
-                'Likely due to the "validate server certificate" option. '
-                'Details: ' + str(err)
-            )
+            raise Exception('Error connecting to API - Likely due to the "validate server certificate" option. Details: {}'.format(str(err)))
+
         except requests.exceptions.HTTPError as err:
-            raise Exception(
-                'Error calling - ' + url + ' - \n'
-                'HTTP Status: ' + r.status
-                + 'Reason: ' + r.reason
-                + 'Details: ' + str(err)
-            )
+            raise Exception('Error calling - {0} - \nHTTP Status: {1} Reason: {2} Details: {3}'.format(url, r.status, r.reason, str(err)))
         except requests.exceptions.RequestException as err:
-            raise Exception(
-                'Error calling - ' + url + ' - Details: ' + str(err)
-            )
+            raise Exception('Error calling - {0} - Details: {1}'.format(url, str(err)))
 
         try:
             results = r.json()
@@ -100,20 +84,17 @@ class PhantomList(object):
         list_exists = self._list_exists(list_name)
 
         if not overwrite and list_exists:
-            raise Exception(
-                'Cannot create list - ' + list_name + ' - because '
-                'it already exists.'
-            )
+            raise Exception('Cannot create list - {0} - because it already exists.'.format(list_name))
         elif list_exists:
             response = self._send_request(
-                '/rest/decided_list/' + list_name,
+                'rest/decided_list/' + list_name,
                 'POST',
                 payload=json.dumps(list_json),
                 content_type='application/json'
             )
         elif not list_exists:
             response = self._send_request(
-                '/rest/decided_list',
+                'rest/decided_list',
                 'POST',
                 payload=json.dumps(list_json),
                 content_type='application/json'
@@ -123,7 +104,7 @@ class PhantomList(object):
 
     def get_list(self, list_name):
         response = self._send_request(
-            '/rest/decided_list/' + list_name + '?_output_format=JSON',
+            'rest/decided_list/' + list_name + '?_output_format=JSON',
             'GET',
         )
 
@@ -132,11 +113,7 @@ class PhantomList(object):
     def search_list(self, list_data, column_num, search_val, find_all=True):
 
         if len(list_data['content'][0]) < column_num:
-            raise Exception(
-                'Searching in column number - ' + column_num + ' but '
-                'the list - ' + list_data['name'] + ' has only '
-                + len(list_data['content'][0]) + ' columns.'
-            )
+            raise Exception('Searching in column number - {0} but the list - {1} has only {2} columns.'.format(column_num, list_data['name'], len(list_data['content'][0])))
 
         found_rows = []
 

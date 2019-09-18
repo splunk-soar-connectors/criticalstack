@@ -1,11 +1,10 @@
 from contextlib import closing
 import os
+import paramiko
 os.sys.path.insert(
     0,
     '{}/paramiko'.format(os.path.dirname(os.path.abspath(__file__)))
 )
-import paramiko
-import time
 
 
 class Intel(object):
@@ -31,11 +30,7 @@ class Intel(object):
 
     def _is_connected(self):
         connected = False
-        if(
-            self.ssh
-            and self.ssh.get_transport() is not None
-            and self.ssh.get_transport().is_active()
-        ):
+        if(self.ssh and self.ssh.get_transport() is not None and self.ssh.get_transport().is_active()):
             connected = True
 
         return connected
@@ -51,25 +46,14 @@ class Intel(object):
                 self.password
             )
         except Exception as e:
-            raise Exception(
-                'Failed connecting to CriticalStack client location - '
-                + self.client_loc + ': ' + e.message
-            )
+            raise Exception('Failed connecting to CriticalStack client location - {0}: {1}'.format(self.client_loc, e.message))
 
         if verify_connect:
             message = self.run_cs_command('list')
-            if(
-                len(message) < 1
-                or not any(
-                    'Pulling feed list from' in line for line in message
-                )
-            ):
-                raise Exception(
-                    'Unable to verify CriticalStack connectivity using '
-                    'command - sudo critical-stack-intel list. Please '
-                    'verify the command works on the server and the user - '
-                    + self.user + ' - is a sudoer. Details: ' + str(message)
-                )
+            if(len(message) < 1 or not any('Pulling feed list from' in line for line in message)):
+                err_msg = 'Unable to verify CriticalStack connectivity using command - sudo critical-stack-intel list. Please \
+                verify the command works on the server and the user - {0} - is a sudoer. Details: {1}'.format(self.user, str(message))
+                raise Exception(err_msg)
 
             if self._is_connected():
                 self.ssh.close()
@@ -83,27 +67,14 @@ class Intel(object):
             self.connect_to_cs()
 
         try:
-            stdin, stdout, stderr = self.ssh.exec_command(
-                "sudo critical-stack-intel "
-                + "--api-key=" + self.apiKey + " "
-                + cs_command,
-                get_pty=True
-            )
+            stdin, stdout, stderr = self.ssh.exec_command("sudo critical-stack-intel --api-key={0} {1}".format(self.apiKey, cs_command), get_pty=True)
         except Exception as e:
-            raise Exception(
-                'Failed running CriticalStack command - ' + cs_command
-                + ' - at client location - ' + self.client_loc
-                + ': ' + e.message
-            )
+            raise Exception('Failed running CriticalStack command - {0} - at client location - {1}:{2}'.format(cs_command, self.client_loc, e.message))
 
         if stdout.channel.eof_received:
             sshError = stderr.readlines()
             if len(sshError) > 0:
-                raise Exception(
-                    'Failed running CriticalStack command - ' + cs_command
-                    + ' - at client location - ' + self.client_loc
-                    + '. Details: ' + str(sshError)
-                )
+                raise Exception('Failed running CriticalStack command - {0} - at client location - {1}. Details: {2}'.format(cs_command, self.client_loc, str(sshError)))
         else:
             # Send Sudo Password
             stdin.write(''.join([self.password, '\n']))
@@ -123,11 +94,7 @@ class Intel(object):
 
             output = stdout.readlines()
         except Exception as e:
-            raise Exception(
-                'CriticalStack output verification failed running '
-                'command - sudo critical-stack-intel ' + cs_command
-                + '. Message: ' + e.message
-            )
+            raise Exception('CriticalStack output verification failed running command - sudo critical-stack-intel {0}. Message: {1}'.format(cs_command, e.message))
 
         if self._is_connected():
             self.ssh.close()
@@ -145,11 +112,7 @@ class Intel(object):
                 with closing(sftp.open(self.file_loc)) as cs_file:  # pylint: disable=E1101
                     cs_list = cs_file.readlines()  # pylint: disable=E1101
         except Exception as e:
-            raise Exception(
-                'Unable to read file - "' + self.file_loc + '" at '
-                'location - "' + self.client_loc + '". Error: '
-                + e.message
-            )
+            raise Exception('Unable to read file - "{0}" at location - "{1}". Error: {2}'.format(self.file_loc, self.client_loc, e.message))
 
         if self._is_connected():
             self.ssh.close()
