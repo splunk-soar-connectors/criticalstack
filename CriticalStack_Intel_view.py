@@ -1,4 +1,3 @@
-import json
 
 
 def all_results(provides, all_results, context):
@@ -31,30 +30,25 @@ def _get_data(all_results, context, provides):
             row_id = str(inner_id)
             accordion_toggle = ''
 
-            if(
-                len(data) > 0
-                and 'sources' in data[0]
-                and len(data[0]['sources']) > 0
-            ):
+            if(len(data) > 0 and 'sources' in data[0] and len(data[0]['sources']) > 0):
                 accordion_toggle = 'accordion-toggle'
 
             if result_summary and parameter:
+
+                provides_count = result_summary.get('detected_' + provides + '_count')
+                hash_count = result_summary.get('detected_hash_count')
+                ip_count = result_summary.get('detected_ip_count')
+                domain_count = result_summary.get('detected_domain_count')
 
                 summary_results.append((
                     data,
                     row_id,
                     accordion_toggle,
                     (
-                        parameter.get(provides)
-                        or parameter.get('hash')
-                        or parameter.get('ip')
-                        or parameter.get('domain')
+                        parameter.get(provides) or parameter.get('hash') or parameter.get('ip') or parameter.get('domain')
                     ),
                     (
-                        result_summary.get('detected_'+provides+'_count')
-                        or result_summary.get('detected_hash_count')
-                        or result_summary.get('detected_ip_count')
-                        or result_summary.get('detected_domain_count')
+                        provides_count or hash_count or ip_count or domain_count
                     ),
                     result_summary.get('lists_updated'),
                     result_summary.get('list_prefix'),
@@ -71,7 +65,7 @@ def _get_data(all_results, context, provides):
 
 
 def _get_json_data(all_results, context, provides):
-    data = []
+    # data = []
     inner_data = []
     json_html = ''
     for summary, action_results in all_results:
@@ -101,38 +95,29 @@ def _get_json_data(all_results, context, provides):
     context['json_data'] = json_html
     return 'CriticalStack_Intel_json_template.html'
 
+
 def _json_treeify(a, parent, htmlstring, index, list_name):
 
         if isinstance(a, list) or isinstance(a, dict):
             if isinstance(a, list):
                 for idx, b in enumerate(a):
                     htmlstring = htmlstring + (
-                        '<div class="treeitem treewidget">'
-                        + (
+                        '<div class="treeitem treewidget">' + (
                             (
                                 '<span class="keyname">' + list_name + '&nbsp;'
                                 '</span>'
                             )
                             if list_name != '' else ''
-                        )
-                        + '<span class="type-indicator">['
-                        + str(idx)
-                        + ']</span>'
-                        + '&nbsp;&nbsp;'
+                        ) + '<span class="type-indicator">[' + str(idx) + ']</span>' + '&nbsp;&nbsp;'
                     )
-                    htmlstring = (
-                        _json_treeify(b, a, htmlstring, idx, '')
-                        + '</div>'
-                    )
+                    htmlstring = (_json_treeify(b, a, htmlstring, idx, '') + '</div>')
 
                 return htmlstring
 
             elif isinstance(a, dict):
                 if not(isinstance(parent, list) or isinstance(parent, dict)):
                     htmlstring = htmlstring + (
-                        '<div class="treeitem treewidget">'
-                        + str(parent)
-                        + '&nbsp;'
+                        '<div class="treeitem treewidget">' + str(parent) + '&nbsp;'
                     )
 
                 htmlstring = htmlstring + (
@@ -142,10 +127,7 @@ def _json_treeify(a, parent, htmlstring, index, list_name):
                 for idx, b in enumerate(a):
                     htmlstring = _json_treeify(b, a, htmlstring, index, '')
 
-                if(
-                    not(isinstance(parent, list) or isinstance(parent, dict))
-                    and htmlstring
-                ):
+                if(not(isinstance(parent, list) or isinstance(parent, dict)) and htmlstring):
                     return(htmlstring + '</div>')
                 else:
                     return(htmlstring)
@@ -171,12 +153,10 @@ def _json_treeify(a, parent, htmlstring, index, list_name):
                     return htmlstring + (
                         '<div class="treeitem treedata">'
                         '<span class="keyname">' + str(a) + '</span>&nbsp;'
-                        '<span class="treedata" data-contains="[]">'
-                        + str(parent[a]) + '</span></div>'
+                        '<span class="treedata" data-contains="[]">' + str(parent[a]) + '</span></div>'
                     )
             else:
                 return htmlstring + (
                     '<div class="treeitem treedata">'
-                    '<span class="treedata" data-contains="[]">'
-                    + str(parent[a]) + '</span></div>'
+                    '<span class="treedata" data-contains="[]">' + str(parent[a]) + '</span></div>'
                 )
